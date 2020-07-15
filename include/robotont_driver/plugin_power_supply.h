@@ -29,6 +29,7 @@ public:
 
 private:
   ros::Publisher power_supply_pub_;
+  double current_ = 0;
 };
 }  // namespace robotont
 #endif

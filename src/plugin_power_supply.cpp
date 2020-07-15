@@ -23,7 +23,8 @@ void PluginPowerSupply::packetReceived(const RobotontPacket& packet)
   robotont_msgs::PowerSupply power_supply_msg;
   try
   {
-    power_supply_msg.current = std::stof(packet[1]);
+    current_ = 0.9*current_ + 0.1*(std::stof(packet[1]) - 0.815)/0.866;
+    power_supply_msg.current = current_;
     power_supply_msg.voltage = std::stof(packet[2]);
     power_supply_pub_.publish(power_supply_msg);
   }
