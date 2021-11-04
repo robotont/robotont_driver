@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   robotont_msgs
   tf
   serial
+  class_loader
 )
 
 catkin_package(
@@ -43,9 +44,11 @@ add_executable(driver_node
 ) 
 
 add_executable (fake_driver_node src/fake_driver_node.cpp)
+add_executable (plugin_yaml_parser src/examples/plugin_yaml_parser.cpp)
 
 target_link_libraries(fake_driver_node ${catkin_LIBRARIES})
 target_link_libraries(driver_node ${catkin_LIBRARIES})
+target_link_libraries(plugin_yaml_parser ${catkin_LIBRARIES} yaml-cpp)
 
 
 

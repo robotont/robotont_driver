@@ -1,0 +1,7 @@
+plugins:
+- MotorPlugin:
+    param_1: 10
+    param_2: 20
+- OdomPlugin:
+    param_3: 30
+    param_4: "string 40"
