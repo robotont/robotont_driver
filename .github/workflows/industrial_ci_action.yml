@@ -5,10 +5,9 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   industrial_ci:
     env:
-      global: # global settings for all jobs
-        ROS_REPO: ros
-        UPSTREAM_WORKSPACE: ".travis.rosinstall"
-        CCACHE_DIR: $HOME/.ccache
+      ROS_REPO: ros
+      UPSTREAM_WORKSPACE: ".travis.rosinstall"
+      CCACHE_DIR: $HOME/.ccache
     strategy:
       matrix:
         env:
