@@ -7,7 +7,7 @@ jobs:
     env:
       ROS_REPO: ros
       UPSTREAM_WORKSPACE: ".travis.rosinstall"
-      CCACHE_DIR: $HOME/.ccache
+      #CCACHE_DIR: $HOME/.ccache
     strategy:
       matrix:
         env:
