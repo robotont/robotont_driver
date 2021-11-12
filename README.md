@@ -12,7 +12,7 @@ On a real robot, the driver is started automatically via a system service. You c
 
 To check the status of the service:
 ```bash
-systemctl status clearbot.service
+systemctl status robotont.service
 ```
 
 If the driver node is running you should also see '/driver\_node' in the output of:
