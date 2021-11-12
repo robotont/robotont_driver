@@ -3,7 +3,7 @@ ROS driver package for robotont.
 
 This package handles low-level communication between ROS and robotont hardware.
 
-[![Build Status](https://travis-ci.com/robotont/robotont_driver.svg?branch=melodic-devel)](https://travis-ci.com/github/robotont/robotont_driver)
+[![CI](https://github.com/robotont/robotont_driver/actions/workflows/industrial_ci_action.yml/badge.svg)](https://github.com/robotont/robotont_driver/actions/workflows/industrial_ci_action.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## 1. Starting the driver
@@ -12,7 +12,7 @@ On a real robot, the driver is started automatically via a system service. You c
 
 To check the status of the service:
 ```bash
-systemctl status clearbot.service
+systemctl status robotont.service
 ```
 
 If the driver node is running you should also see '/driver\_node' in the output of:

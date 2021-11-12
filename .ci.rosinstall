@@ -4,3 +4,7 @@
 - git:
     local-name: robotont/robotont_description
     uri: https://github.com/robotont/robotont_description.git
+- git:
+    local-name: serial
+    uri: https://github.com/wjwwood/serial.git
+    version: 'main'
