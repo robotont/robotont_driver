@@ -15,6 +15,9 @@ find_package(catkin REQUIRED COMPONENTS
   class_loader
 )
 
+# class_loader is included as a non-ROS library for ROS2 compatibility
+find_package(class_loader REQUIRED)
+
 catkin_package(
   CATKIN_DEPENDS
     std_msgs
@@ -29,6 +32,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${class_loader_INCLUDE_DIRS}
 )
 
 add_executable(driver_node 
@@ -45,14 +49,19 @@ add_executable(driver_node
 
 add_executable (fake_driver_node src/fake_driver_node.cpp)
 add_executable (plugin_yaml_parser src/examples/plugin_yaml_parser.cpp)
+add_executable (plugin_loader src/examples/plugin_loader.cpp)
 
 target_link_libraries(fake_driver_node ${catkin_LIBRARIES})
 target_link_libraries(driver_node ${catkin_LIBRARIES})
 target_link_libraries(plugin_yaml_parser ${catkin_LIBRARIES} yaml-cpp)
+target_link_libraries(plugin_loader ${catkin_LIBRARIES} ${class_loader_LIBRARIES})
 
+# Build the plugins
+add_library(plugin_test_1 src/examples/plugin_test_1.cpp)
+target_link_libraries(plugin_test_1 ${catkin_LIBRARIES} ${class_loader_LIBRARIES})
+class_loader_hide_library_symbols(plugin_test_1)
 
-
-install(TARGETS driver_node fake_driver_node 
+install(TARGETS driver_node fake_driver_node plugin_test_1
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

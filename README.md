@@ -100,4 +100,3 @@ A plugin for ToF range sensor addon. Publishes messages on /robotont/range (<sen
 #### plugin\_led
 
 A plugin for controlling the led strip addon. The plugin subscribes to /robotont/led\_pixel (<robotont_msgs::LedModulePixel>) and /robotont/led\_segment (<robotont_msgs::LedModuleSegment>) topics, which can be used to set the color of an individual pixel or a segment of pixels.
-
