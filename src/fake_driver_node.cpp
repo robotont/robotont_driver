@@ -2,6 +2,7 @@
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
+#include <std_msgs/Float32MultiArray.h> // ! TODO test
 
 double vx = 0.0;
 double vy = 0.0;
@@ -22,6 +23,7 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
     ros::Subscriber vel_sub = n.subscribe<geometry_msgs::Twist>("cmd_vel", 1000, receiveCmd);
     ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
+    ros::Publisher debug_pub = n.advertise<std_msgs::Float32MultiArray>("debug", 10); // ! TODO test
     tf::TransformBroadcaster odom_broadcaster;
     std::string odom_frame;
     std::string base_frame;
@@ -100,5 +102,10 @@ int main(int argc, char **argv)
         // Publish the message
         odom_pub.publish(odom);
         last_time = current_time;
+
+        // ! TEST debug msg
+        std_msgs::Float32MultiArray data_to_send = std_msgs::Float32MultiArray();
+        data_to_send.data = {0, 1, 2, 3};
+        debug_pub.publish(data_to_send);
     }
 }
