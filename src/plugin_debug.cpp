@@ -21,13 +21,13 @@ namespace robotont
     }
 
     // Send data to board
-    void PluginDebug::writeDebugData(float data[])
+    void PluginDebug::writeDebugData(const std_msgs::Float32MultiArray &debug_msg)
     {
         RobotontPacket packet;
         packet.push_back("DEBUG_IN");
-        for (uint8_t i = 0; i < DEBUG_ARGS; i++)
+        for (uint8_t i = 0; i < debug_msg.data.size(); i++)
         {
-            packet.push_back(std::to_string(data[i]));
+            packet.push_back(std::to_string(debug_msg.data[i]));
         }
 
         if (hw_ptr_)
@@ -38,7 +38,8 @@ namespace robotont
 
     void PluginDebug::debug_in_callback(const std_msgs::Float32MultiArray &debug_msg)
     {
-        writeDebugData(debug_msg.data); // ! HELP 1
+
+        writeDebugData(debug_msg);
     }
 
     // Receive data from board
@@ -54,12 +55,12 @@ namespace robotont
             return;
         }
 
-        float data_out[DEBUG_ARGS]; // ! HELP 3 / sizeof(packet)
-        for (uint8_t i = 1; i < DEBUG_ARGS + 1; i++)
+        std::vector<float> data_out;
+        for (uint8_t i = 1; i < packet.size(); i++)  // ! TODO elementide arv
         {
             try
             {
-                data_out[i] = std::stof(packet[i]);
+                data_out.push_back(std::stof(packet[i]));
             }
             catch (std::exception e)
             {
@@ -67,7 +68,7 @@ namespace robotont
             }
         }
 
-        debug_msg_.data = data_out; // ! HELP 2
+        debug_msg_.data = data_out;
         publish();
     }
 
