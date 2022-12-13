@@ -5,6 +5,7 @@
 #include "robotont_driver/plugin_power_supply.h"
 #include "robotont_driver/plugin_range.h"
 #include "robotont_driver/plugin_led_module.h"
+#include "robotont_driver/plugin_debug.h"
 
 namespace robotont
 {
@@ -20,7 +21,7 @@ namespace robotont
     plugins_.emplace_back(std::make_shared<PluginPowerSupply>(hw_ptr_, "PowerSupply"));
     plugins_.emplace_back(std::make_shared<PluginRange>(hw_ptr_, "Range sensor"));
     plugins_.emplace_back(std::make_shared<PluginLedModule>(hw_ptr_, "LedModulePixel"));
-    plugins_.emplace_back(std::make_shared<PluginOdomExpected>(hw_ptr_, "Debug"));          // TODO
+    plugins_.emplace_back(std::make_shared<PluginDebug>(hw_ptr_, "Debug"));
 
     // Here we load all the possible plugins
     for (auto plugin : plugins_)
