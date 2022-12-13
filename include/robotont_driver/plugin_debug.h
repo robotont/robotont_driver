@@ -27,7 +27,7 @@ namespace robotont
 
     private:
         // Send data to board
-        void PluginDebug::writeDebugData(const std_msgs::Float32MultiArray &debug_msg);
+        void writeDebugData(const std_msgs::Float32MultiArray &debug_msg);
         void debug_in_callback(const std_msgs::Float32MultiArray &debug_msg);
         // Receive data from board
         void reset();
