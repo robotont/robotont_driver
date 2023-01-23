@@ -41,6 +41,7 @@ add_executable(driver_node
   src/plugin_range.cpp
   src/plugin_led_module.cpp
   src/plugin_odom_expected.cpp
+  src/plugin_debug.cpp
 ) 
 
 add_executable (fake_driver_node src/fake_driver_node.cpp)
