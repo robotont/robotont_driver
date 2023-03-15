@@ -5,11 +5,10 @@ namespace robotont
   PluginDebugOut::PluginDebugOut(HardwarePtr hw_ptr, const std::string &name) : PluginBase(hw_ptr, name)
   {
     // Get frame names from parameter server
-    std::string odom_frame;
-    std::string odom_child_frame;
-    nh_.param("odom/frame", odom_frame, std::string("debug_out"));
-    nh_.param("odom/child_frame", odom_child_frame, std::string("base_footprint"));
-
+    // std::string debug_frame;
+    // std::string odom_child_frame;
+    // nh_.param("odom/frame", debug_frame, std::string("debug_out"));
+    // nh_.param("odom/child_frame", odom_child_frame, std::string("base_footprint"));
     reset();
 
     debug_pub_ = nh_.advertise<std_msgs::Float32MultiArray>("debug_out", 10);

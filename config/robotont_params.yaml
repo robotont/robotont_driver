@@ -4,6 +4,7 @@
 serial:
   port: "/dev/ttyACM0"
   baudrate: 115200
+  # baudrate: 256000
 
 # Frame names for odometry
 odom:
