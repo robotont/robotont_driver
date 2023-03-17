@@ -16,8 +16,8 @@ namespace robotont
 
     // Initialize builtin plugins
     plugins_.emplace_back(std::make_shared<PluginMotors>(hw_ptr_, "Motors"));
-    plugins_.emplace_back(std::make_shared<PluginOdom>(hw_ptr_, "Odometry")); // !
-    plugins_.emplace_back(std::make_shared<PluginOdomExpected>(hw_ptr_, "OdometryExpected")); // !
+    plugins_.emplace_back(std::make_shared<PluginOdom>(hw_ptr_, "Odometry"));
+    plugins_.emplace_back(std::make_shared<PluginOdomExpected>(hw_ptr_, "OdometryExpected"));
     plugins_.emplace_back(std::make_shared<PluginPowerSupply>(hw_ptr_, "PowerSupply"));
     plugins_.emplace_back(std::make_shared<PluginRange>(hw_ptr_, "Range sensor"));
     plugins_.emplace_back(std::make_shared<PluginLedModule>(hw_ptr_, "LedModulePixel"));
