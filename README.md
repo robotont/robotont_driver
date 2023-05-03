@@ -48,7 +48,7 @@ rosrun teleop_twist_keyboard teleop_twist_keyboard.py
 
 * If teleop twist keyboard is not installed:
 ```bash
-sudo apt-get install ros-melodic-teleop-twist-keyboard
+sudo apt-get install ros-noetic-teleop-twist-keyboard
 ```
 
 * Follow the printout in the console to learn how to control the robot. Enjoy the ride!
