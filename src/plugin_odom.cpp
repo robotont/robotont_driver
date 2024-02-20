@@ -4,6 +4,7 @@ using namespace std::chrono_literals;
 
 namespace robotont
 {
+// Constructor for the PluginOdom class
 PluginOdom::PluginOdom(rclcpp::Node::SharedPtr node_) : node_(node_)
 {
   RCLCPP_INFO(node_->get_logger(), "Robotont odometry is starting...");
@@ -18,12 +19,11 @@ PluginOdom::PluginOdom(rclcpp::Node::SharedPtr node_) : node_(node_)
   // Initialize messages
   reset();
 
-
   // Initialize odom publisher
   odom_pub_ = node_->create_publisher<nav_msgs::msg::Odometry>("/odom", 2);
-  //odom_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(node_);
 }
 
+// Destructor for the PluginOdom class
 PluginOdom::~PluginOdom()
 {
 }
@@ -72,7 +72,6 @@ void PluginOdom::packetReceived(const std::vector<std::string>& packet)
 
   publish();
 }
-
 
 void PluginOdom::setFrameId(const std::string& frame_id)
 {

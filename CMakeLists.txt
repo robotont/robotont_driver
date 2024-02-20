@@ -27,13 +27,13 @@ find_package(ASIO REQUIRED)
 include_directories(include)
 include_directories(${serial_driver_INCLUDE_DIRS})
 ament_auto_add_library(${PROJECT_NAME} SHARED
-src/driver.cpp
-src/hardware.cpp
-src/plugin_base.cpp
-src/driver_node.cpp
-src/plugin_odom.cpp
-src/plugin_motors.cpp
-src/plugin_led_module.cpp
+  src/driver.cpp
+  src/hardware.cpp
+  src/plugin_base.cpp
+  src/driver_node.cpp
+  src/plugin_odom.cpp
+  src/plugin_motors.cpp
+  src/plugin_led_module.cpp
 )
 
 add_executable(driver_node src/driver.cpp src/hardware.cpp src/driver_node.cpp src/plugin_base.cpp src/plugin_odom.cpp src/plugin_motors.cpp src/plugin_led_module.cpp)

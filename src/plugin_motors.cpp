@@ -4,6 +4,7 @@ using namespace std::chrono_literals;
 
 namespace robotont
 {
+// Constructor for the PluginMotors class
 PluginMotors::PluginMotors(HardwarePtr hw_ptr, rclcpp::Node::SharedPtr node_) : hw_ptr_(hw_ptr), node_(node_)
 {
   RCLCPP_INFO(node_->get_logger(), "Robotont motors are starting...");
@@ -14,6 +15,7 @@ PluginMotors::PluginMotors(HardwarePtr hw_ptr, rclcpp::Node::SharedPtr node_) : 
     std::bind(&PluginMotors::cmd_vel_callback, this, std::placeholders::_1));
 }
 
+// Destructor for the PluginMotors class
 PluginMotors::~PluginMotors()
 {
 }
@@ -34,6 +36,5 @@ void PluginMotors::writeRobotSpeed(float lin_vel_x, float lin_vel_y, float ang_v
     hw_ptr_->subscriber_callback(packet);
   }
 }
-
 
 } // namespace robotont

@@ -1,7 +1,6 @@
 #ifndef DRIVER_
 #define DRIVER_
 
-
 #include <rclcpp/rclcpp.hpp>
 #include "robotont_driver/hardware.hpp"
 #include "robotont_driver/plugin_base.hpp"
@@ -25,28 +24,39 @@
 
 namespace robotont
 {
+// Driver class that inherits from rclcpp::Node
 class Driver : public rclcpp::Node
 {    
 public:
+  // Constructor
   Driver();
+  // Function to initialize the driver
   void initialize();
+  // Function to update the packet
   void update_packet();
+  // Destructor
   ~Driver();
 
+  // Vector to store driver packets
   std::vector<std::vector<std::string>> driver_packets;
 
 private:
-  //void update(const ros::TimerEvent& event);
+  // Function to update the driver
   void update();
 
-  //ros::NodeHandle nh_;
+  // Pointer to the Hardware object
   HardwarePtr hw_ptr_;
+  // Pointer to the Odom object
   OdomPtr odom_ptr_;
+  // Pointer to the Motors object
   MotorsPtr motor_ptr_;
   LedModulePtr led_ptr_;
 
+  // Vector to store hardware packets
   std::vector<std::string> hardware_packet_;
+  // Vector to store PluginBasePtr objects
   std::vector<PluginBasePtr> plugins_;
+  // Shared pointer to the timer
   rclcpp::TimerBase::SharedPtr timer_;
 };
 }  // namespace robotont

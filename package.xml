@@ -23,14 +23,13 @@
   <depend>tf2_geometry_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
+  <depend>robotont_msgs</depend>
 
   <build_depend>rclcpp</build_depend>
   <build_depend>geometry_msgs</build_depend>
-  <build_depend>robotont_msgs</build_depend>
 
   <exec_depend>rclcpp</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>robotont_msgs</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
