@@ -50,6 +50,13 @@ private:
     rclcpp::Time current_time = this->now();
     double dt = (current_time - last_time_).seconds();
 
+    if (dt > 0.5)
+    {
+        vx_ = 0.0;
+        vy_ = 0.0;
+        vth_ = 0.0;
+    }
+
     // Compute odometry as before
     double delta_x = (vx_ * std::cos(th_) - vy_ * std::sin(th_)) * dt;
     double delta_y = (vx_ * std::sin(th_) + vy_ * std::cos(th_)) * dt;
