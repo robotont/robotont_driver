@@ -49,6 +49,13 @@ private:
 {
     rclcpp::Time current_time = this->now();
     double dt = (current_time - last_time_).seconds();
+    if (dt > 0.5)
+    {
+        vx_ = 0.0;
+        vy_ = 0.0;
+        vth_ = 0.0;
+    }
+
 
     if (dt > 0.5)
     {
