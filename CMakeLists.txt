@@ -17,6 +17,7 @@ find_package(asio_cmake_module REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(ASIO REQUIRED)
 find_package(robotont_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 ament_auto_find_build_dependencies()
 
@@ -34,10 +35,11 @@ ament_auto_add_library(${PROJECT_NAME} SHARED
   src/plugin_odom.cpp
   src/plugin_motors.cpp
   src/plugin_led_module.cpp
+  src/plugin_bat_state.cpp
 )
 
-add_executable(driver_node src/driver.cpp src/hardware.cpp src/driver_node.cpp src/plugin_base.cpp src/plugin_odom.cpp src/plugin_motors.cpp src/plugin_led_module.cpp)
-ament_target_dependencies(driver_node io_context serial_driver rclcpp geometry_msgs nav_msgs pluginlib tf2_geometry_msgs robotont_msgs)
+add_executable(driver_node src/driver.cpp src/hardware.cpp src/driver_node.cpp src/plugin_base.cpp src/plugin_odom.cpp src/plugin_motors.cpp src/plugin_led_module.cpp src/plugin_bat_state)
+ament_target_dependencies(driver_node io_context serial_driver rclcpp geometry_msgs nav_msgs pluginlib tf2_geometry_msgs robotont_msgs sensor_msgs)
 
 add_executable(fake_driver_node src/fake_driver_node.cpp)
 ament_target_dependencies(fake_driver_node io_context serial_driver rclcpp geometry_msgs nav_msgs pluginlib tf2_geometry_msgs)

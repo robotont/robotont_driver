@@ -7,6 +7,7 @@
 #include "robotont_driver/plugin_odom.hpp"
 #include "robotont_driver/plugin_motors.hpp"
 #include "robotont_driver/plugin_led_module.hpp"
+#include "robotont_driver/plugin_bat_state.hpp"
 #include <rclcpp_lifecycle/lifecycle_node.hpp>
 #include <lifecycle_msgs/msg/state.hpp>
 #include "geometry_msgs/msg/twist.hpp"
@@ -48,6 +49,8 @@ private:
   HardwarePtr hw_ptr_;
   // Pointer to the Odom object
   OdomPtr odom_ptr_;
+
+  BatStatePtr bat_state_ptr_;
   // Pointer to the Motors object
   MotorsPtr motor_ptr_;
   LedModulePtr led_ptr_;
