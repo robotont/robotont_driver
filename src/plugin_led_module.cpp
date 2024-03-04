@@ -16,6 +16,10 @@
     led_mode_sub_ = node_->create_subscription<robotont_msgs::msg::LedModuleMode>("/led_mode", 
       rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_sensor_data)), 
       std::bind(&PluginLedModule::mode_callback, this, std::placeholders::_1));
+    // Subscribe to led_segment topic
+    led_segment_sub_ = node_->create_subscription<robotont_msgs::msg::LedModuleSegment>("/led_segment",
+      rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_sensor_data)),
+      std::bind(&PluginLedModule::segment_callback, this, std::placeholders::_1));  
   }
 
   PluginLedModule::~PluginLedModule()
@@ -54,34 +58,33 @@
     writeMode(led_mode_msg->mode, led_mode_msg->color.r, led_mode_msg->color.g, led_mode_msg->color.b);
   }
 
-  /*void PluginLedModule::writeSegment(const robotont_msgs::msg::LedModuleSegment::SharedPtr led_seg_msg)
+  void PluginLedModule::writeSegment(const robotont_msgs::msg::LedModuleSegment::SharedPtr led_seg_msg)
   {
-    RCLCPP_INFO(node_->get_logger(), ("Sent LS:"+std::to_string(led_seg_msg.idx_start)+":...").c_str());
-    std::string packet = "LS:"+std::to_string(idx)+":"+std::to_string(r)+":"+std::to_string(g)+":"+std::to_string(b)+"\r\n";
+    std::string packet;
+    packet += "LS";
+    packet += ":" + std::to_string(led_seg_msg->idx_start);
+    packet += ":" + std::to_string(led_seg_msg->idx_end);
+    for (auto &color : led_seg_msg->colors)
+    {
+      unsigned int color_combined = 0x000000;
+      color_combined += (color.r << 16);
+      color_combined += (color.g << 8);
+      color_combined += (color.b);
+      packet += ":" + std::to_string(color_combined);
+    }
+    packet += "\r\n";
+    RCLCPP_INFO(node_->get_logger(), packet.c_str());
+
     if (hw_ptr_)
     {
       hw_ptr_->subscriber_callback(packet);
     }
   }
 
-  // Callback function to read data from cmd_vel topic
   void PluginLedModule::segment_callback(const robotont_msgs::msg::LedModuleSegment::SharedPtr led_seg_msg)
   {
-    writeSegment(led_px_msg->idx, led_px_msg->color.r, led_px_msg->color.g, led_px_msg->color.b);
-  }*/
-
-
-  /*
-  // Function to create the string packet from cmd_vel topic and send it to serial
-  void PluginLedModule::writeRobotSpeed(float lin_vel_x, float lin_vel_y, float ang_vel_z)
-  {
-    std::string packet = "RS:"+std::to_string(lin_vel_x)+":"+std::to_string(lin_vel_y)+":"+std::to_string(ang_vel_z)+"\r\n";
-    if (hw_ptr_)
-    {
-      hw_ptr_->subscriber_callback(packet);
-    }
-  }*/
-
+    writeSegment(led_seg_msg);
+  }
 
   //} // namespace robotont
   
