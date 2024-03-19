@@ -21,18 +21,25 @@ PluginBatState::~PluginBatState()
 
 void PluginBatState::packetReceived(const std::vector<std::string>& packet)
 {
-  if (packet.size() != 5 || packet[0] != "BAT")
+  if (packet.size() != 5 || packet[0] != "BATSTATE")
   {
     return;
   }
 
-  float voltage, current;
+  float MTRCurrent, NUCCurrent, WallVoltage, BatVoltage, currentSum;
 
   try
   {
-    voltage = std::stof(packet[2]);
-    current = std::stof(packet[4]);
+    //The message is BATSTATE:{MTRCURRENT}:{NUCCURRENT}:{WALLVOLTAGE}:{BATVOLTAGE}
+    MTRCurrent = std::stof(packet[1]);
+    NUCCurrent = std::stof(packet[2]);
 
+    WallVoltage = std::stof(packet[3]);
+    BatVoltage = std::stof(packet[4]);
+
+    currentSum = MTRCurrent + NUCCurrent;
+
+  
   }
   catch (const std::exception& e)
   {
@@ -40,7 +47,7 @@ void PluginBatState::packetReceived(const std::vector<std::string>& packet)
     return;
   }
 
-  update(voltage, current);
+  update(BatVoltage, currentSum);
 }
 
 void PluginBatState::publish()
