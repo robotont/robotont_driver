@@ -27,7 +27,7 @@ public:
   void publish();
 
   // Function to update the battery state
-  void update(float voltage, float current);
+  void update(float voltage, float current, bool present);
 
 private:
   // Shared pointer to the node
