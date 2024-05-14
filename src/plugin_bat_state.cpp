@@ -27,6 +27,7 @@ void PluginBatState::packetReceived(const std::vector<std::string>& packet)
   }
 
   float MTRCurrent, NUCCurrent, WallVoltage, BatVoltage, currentSum;
+  bool present = false;
 
   try
   {
@@ -38,6 +39,9 @@ void PluginBatState::packetReceived(const std::vector<std::string>& packet)
     BatVoltage = std::stof(packet[4]);
 
     currentSum = MTRCurrent + NUCCurrent;
+    if(BatVoltage > 5){ //Expect that there is battery connected when the value is over 5 V
+      present = true;
+    }
 
   
   }
@@ -47,7 +51,7 @@ void PluginBatState::packetReceived(const std::vector<std::string>& packet)
     return;
   }
 
-  update(BatVoltage, currentSum);
+  update(BatVoltage, currentSum, present);
 }
 
 void PluginBatState::publish()
@@ -58,11 +62,12 @@ void PluginBatState::publish()
   }
 }
 
-void PluginBatState::update(float voltage, float current)
+void PluginBatState::update(float voltage, float current, bool present)
 {
   battery_state_msg_->header.stamp = node_->now();
   battery_state_msg_->voltage = voltage;
   battery_state_msg_->current = current;
+  battery_state_msg_->present = present;
 
   publish(); // Optionally publish the updated battery state immediately
 }
@@ -72,6 +77,7 @@ void PluginBatState::reset()
   battery_state_msg_->header.stamp = node_->now();
   battery_state_msg_->voltage = 0;
   battery_state_msg_->current = 0;
+  battery_state_msg_->present = false;
 }
 
 } // namespace robotont
