@@ -36,26 +36,33 @@
     }
   }
 
-  // Callback function to read data from cmd_vel topic
+  // Callback function to read data from led_pixel topic
   void PluginLedModule::pixel_callback(const robotont_msgs::msg::LedModulePixel::SharedPtr led_px_msg)
   {
     writePixel(led_px_msg->idx, led_px_msg->color.r, led_px_msg->color.g, led_px_msg->color.b);
   }
 
-  void PluginLedModule::writeMode(uint8_t mode, uint8_t r, uint8_t g, uint8_t b)
+  void PluginLedModule::writeMode(const robotont_msgs::msg::LedModuleMode::SharedPtr led_mode_msg)
   {
-    //RCLCPP_INFO(node_->get_logger(), ("Sent LM:"+std::to_string(mode)+":"+std::to_string(r)+":"+std::to_string(g)+":"+std::to_string(b)).c_str());
-    std::string packet = "LM:"+std::to_string(mode)+":"+std::to_string(r)+":"+std::to_string(g)+":"+std::to_string(b)+"\r\n";
+    std::string packet;
+    packet += "LM";
+    packet += ":" + std::to_string(led_mode_msg->mode);
+    for (auto &param : led_mode_msg->params)
+    {
+      packet += ":" + std::to_string(param);
+    }
+    packet += "\r\n";
+    RCLCPP_INFO(node_->get_logger(), packet.c_str());
+
     if (hw_ptr_)
     {
       hw_ptr_->subscriber_callback(packet);
     }
   }
 
-  // Callback function to read data from cmd_vel topic
   void PluginLedModule::mode_callback(const robotont_msgs::msg::LedModuleMode::SharedPtr led_mode_msg)
   {
-    writeMode(led_mode_msg->mode, led_mode_msg->color.r, led_mode_msg->color.g, led_mode_msg->color.b);
+    writeMode(led_mode_msg);
   }
 
   void PluginLedModule::writeSegment(const robotont_msgs::msg::LedModuleSegment::SharedPtr led_seg_msg)
@@ -73,7 +80,7 @@
       packet += ":" + std::to_string(color_combined);
     }
     packet += "\r\n";
-    RCLCPP_INFO(node_->get_logger(), packet.c_str());
+    //RCLCPP_INFO(node_->get_logger(), packet.c_str());
 
     if (hw_ptr_)
     {
@@ -81,6 +88,7 @@
     }
   }
 
+  // Callback function to read data from led_segment topic
   void PluginLedModule::segment_callback(const robotont_msgs::msg::LedModuleSegment::SharedPtr led_seg_msg)
   {
     writeSegment(led_seg_msg);

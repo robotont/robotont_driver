@@ -29,12 +29,12 @@ private:
 
   void writePixel(unsigned int idx, uint8_t r, uint8_t g, uint8_t b);
   void pixel_callback(const robotont_msgs::msg::LedModulePixel::SharedPtr led_px_msg);
-  void writeMode(uint8_t mode, uint8_t r, uint8_t g, uint8_t b);
+  void writeMode(const robotont_msgs::msg::LedModuleMode::SharedPtr led_mode_msg);
   void mode_callback(const robotont_msgs::msg::LedModuleMode::SharedPtr led_mode_msg);
   void writeSegment(const robotont_msgs::msg::LedModuleSegment::SharedPtr led_seg_msg);
   void segment_callback(const robotont_msgs::msg::LedModuleSegment::SharedPtr led_seg_msg);
 
-  rclcpp::Subscription<robotont_msgs::msg::LedModulePixel>::SharedPtr led_pixel_sub_; //TODO: fix issue with not being able to access RobotontPacket within the same namespace. When done, also update other classes to use RobotontPacket.
+  rclcpp::Subscription<robotont_msgs::msg::LedModulePixel>::SharedPtr led_pixel_sub_;
   rclcpp::Subscription<robotont_msgs::msg::LedModuleMode>::SharedPtr led_mode_sub_;
   rclcpp::Subscription<robotont_msgs::msg::LedModuleSegment>::SharedPtr led_segment_sub_;
 };
