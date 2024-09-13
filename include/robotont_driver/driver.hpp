@@ -50,10 +50,10 @@ private:
   // Pointer to the Odom object
   OdomPtr odom_ptr_;
 
-  BatStatePtr bat_state_ptr_;
+  BatStatePtr battery_state_ptr_;
   // Pointer to the Motors object
   MotorsPtr motor_ptr_;
-  //LedModulePtr led_ptr_;
+  LedModulePtr led_ptr_;
 
   // Vector to store hardware packets
   std::vector<std::string> hardware_packet_;

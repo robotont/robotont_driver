@@ -1,4 +1,4 @@
-/*#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "robotont_driver/driver_exception.hpp"
 #include "robotont_driver/plugin_base.hpp"
 
@@ -15,7 +15,7 @@ using namespace std::chrono_literals;
  * \brief PluginLedModule class
  * This plugin subscribes to led_pixel and led_segment topics, which can be used to set the led module color.
  */
-/*namespace robotont
+namespace robotont
 {
 class PluginLedModule
 {
@@ -42,4 +42,4 @@ private:
 typedef std::shared_ptr<PluginLedModule> LedModulePtr;
 }  // namespace robotont
 #endif
-*/
+

@@ -24,8 +24,6 @@ namespace robotont
     bool plugin_motor;
     bool plugin_led_module;
     bool plugin_battery_state;
-    bool plugin_range;
-    bool plugin_bat_state;
     try {
       if (!this->has_parameter("plugin_odom")) {
         plugin_odom = this->declare_parameter<bool>("plugin_odom", true);
@@ -48,13 +46,7 @@ namespace robotont
       if (!this->has_parameter("plugin_battery_state")) {
         plugin_battery_state = this->declare_parameter<bool>("plugin_battery_state", true);
       } else {
-        plugin_battery_state = this->get_parameter("plugin_power_supply").as_bool();
-      }
-
-      if (!this->has_parameter("plugin_range")) {
-        plugin_range = this->declare_parameter<bool>("plugin_range", true);
-      } else {
-        plugin_range = this->get_parameter("plugin_range").as_bool();
+        plugin_battery_state = this->get_parameter("plugin_battery_state").as_bool();
       }
 
     } catch (rclcpp::ParameterTypeException & ex) {
@@ -70,16 +62,10 @@ namespace robotont
       motor_ptr_ = std::make_shared<PluginMotors>(hw_ptr_, node_ptr);
     }
     if (plugin_led_module) {
-      //led_ptr_ = std::make_shared<PluginLedModule>(hw_ptr_, node_ptr);
+      led_ptr_ = std::make_shared<PluginLedModule>(hw_ptr_, node_ptr);
     }
     if (plugin_battery_state) {
-      //create pointer for battery state plugin
-    }
-    if (plugin_range) {
-      //create pointer for range plugin
-    }
-    if (plugin_bat_state){
-      bat_state_ptr_ = std::make_shared<PluginBatState>(node_ptr);
+      battery_state_ptr_ = std::make_shared<PluginBatState>(node_ptr);
     }
     
     // Create timer to read data from the robot
@@ -95,7 +81,7 @@ namespace robotont
     for (auto packet : driver_packets)
     {
       odom_ptr_->packetReceived(packet);
-      bat_state_ptr_->packetReceived(packet);
+      battery_state_ptr_->packetReceived(packet);
       for (auto arg : packet)
       {
         RCLCPP_DEBUG(this->get_logger(), "Received packet content: %s", arg.c_str());

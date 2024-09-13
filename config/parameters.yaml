@@ -7,6 +7,5 @@ driver:
     stop_bits: "one"
     plugin_odom: true
     plugin_motor: true
-    plugin_led_module: false
-    plugin_power_supply: false
-    plugin_range: false
+    plugin_led_module: true
+    plugin_battery_state: true
