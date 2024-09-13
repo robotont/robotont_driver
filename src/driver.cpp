@@ -2,7 +2,8 @@
 #include "robotont_driver/hardware.hpp"
 #include "robotont_driver/plugin_odom.hpp"
 #include "robotont_driver/plugin_motors.hpp"
-//#include "robotont_driver/plugin_led_module.hpp"
+#include "robotont_driver/plugin_led_module.hpp"
+#include "robotont_driver/plugin_bat_state.hpp"
 
 namespace robotont
 {
@@ -22,8 +23,9 @@ namespace robotont
     bool plugin_odom;
     bool plugin_motor;
     bool plugin_led_module;
-    bool plugin_power_supply;
+    bool plugin_battery_state;
     bool plugin_range;
+    bool plugin_bat_state;
     try {
       if (!this->has_parameter("plugin_odom")) {
         plugin_odom = this->declare_parameter<bool>("plugin_odom", true);
@@ -43,10 +45,10 @@ namespace robotont
         plugin_led_module = this->get_parameter("plugin_led_module").as_bool();
       }
 
-      if (!this->has_parameter("plugin_power_supply")) {
-        plugin_power_supply = this->declare_parameter<bool>("plugin_power_supply", true);
+      if (!this->has_parameter("plugin_battery_state")) {
+        plugin_battery_state = this->declare_parameter<bool>("plugin_battery_state", true);
       } else {
-        plugin_power_supply = this->get_parameter("plugin_power_supply").as_bool();
+        plugin_battery_state = this->get_parameter("plugin_power_supply").as_bool();
       }
 
       if (!this->has_parameter("plugin_range")) {
@@ -70,14 +72,17 @@ namespace robotont
     if (plugin_led_module) {
       //led_ptr_ = std::make_shared<PluginLedModule>(hw_ptr_, node_ptr);
     }
-    if (plugin_power_supply) {
-      //create pointer for power supply plugin
+    if (plugin_battery_state) {
+      //create pointer for battery state plugin
     }
     if (plugin_range) {
       //create pointer for range plugin
     }
+    if (plugin_bat_state){
+      bat_state_ptr_ = std::make_shared<PluginBatState>(node_ptr);
+    }
     
-    // Create timer to read data from the robot 
+    // Create timer to read data from the robot
     timer_ = this->create_wall_timer(
             std::chrono::milliseconds(20),
             std::bind(&Driver::update_packet, this));
@@ -90,6 +95,7 @@ namespace robotont
     for (auto packet : driver_packets)
     {
       odom_ptr_->packetReceived(packet);
+      bat_state_ptr_->packetReceived(packet);
       for (auto arg : packet)
       {
         RCLCPP_DEBUG(this->get_logger(), "Received packet content: %s", arg.c_str());
