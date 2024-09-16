@@ -8,7 +8,7 @@
 namespace robotont
 {
   // Constructor for the Driver class
-  Driver::Driver() : Node("driver_node", rclcpp::NodeOptions().enable_logger_service(true))
+  Driver::Driver() : Node("driver_node")
   {
   }
   
