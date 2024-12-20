@@ -7,7 +7,7 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include "geometry_msgs/msg/quaternion.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
-#include "tf2_ros/static_transform_broadcaster.h"
+#include "tf2_ros/transform_broadcaster.h"
 
 #ifndef ODOM_HPP
 #define ODOM_HPP
@@ -55,7 +55,7 @@ private:
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
 
   // Shared pointer to the broadcaster class for publishing transform messages
-  std::shared_ptr<tf2_ros::StaticTransformBroadcaster> odom_broadcaster_;
+  std::unique_ptr<tf2_ros::TransformBroadcaster> odom_broadcaster_;
 
   // Weak pointer to the driver node
   rclcpp::Node::WeakPtr weak_node_;

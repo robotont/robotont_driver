@@ -1,4 +1,0 @@
-Invoking command in '/home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver -- -j4 -l4
-Invoked command in '/home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver -- -j4 -l4
-Invoking command in '/home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver
-Invoked command in '/home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/peko/ros2_ws2/src/robotont_driver/build/robotont_driver

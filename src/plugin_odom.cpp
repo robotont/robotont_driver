@@ -21,6 +21,9 @@ PluginOdom::PluginOdom(rclcpp::Node::SharedPtr node_) : node_(node_)
 
   // Initialize odom publisher
   odom_pub_ = node_->create_publisher<nav_msgs::msg::Odometry>("/odom", 2);
+  
+  // Init odom tf broadcaster
+  odom_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(node_);
 }
 
 // Destructor for the PluginOdom class
