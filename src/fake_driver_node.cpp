@@ -13,6 +13,7 @@ public:
         // Initialize parameters
         this->declare_parameter<std::string>("odom_frame", "odom");
         this->declare_parameter<std::string>("base_frame", "base_footprint");
+        this->declare_parameter<bool>("use_sim_time", false);
         this->get_parameter("odom_frame", odom_frame_);
         this->get_parameter("base_frame", base_frame_);
 
