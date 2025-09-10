@@ -6,20 +6,20 @@ This package handles low-level communication between ROS and robotont hardware.
 [![CI](https://github.com/robotont/robotont_driver/actions/workflows/industrial_ci_action.yml/badge.svg)](https://github.com/robotont/robotont_driver/actions/workflows/industrial_ci_action.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## 1. Installing and starting the driver from ROS distro
+## 1. Installing and starting the driver from ROS distro [NOT YET AVAILABLE]
 
-### 1. Ensure Your System's Distribution is Supported. ROS 2 Humble supports Ubuntu 22.04 (Jammy)
+### 1. Ensure Your System's Distribution is Supported. ROS 2 Jazzy supports Ubuntu 24.04
 
-### 2. Install ROS 2 Humble [Installing ROS2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
+### 2. Install ROS 2 Jazzy [Installing ROS2 Jazzy](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debians.html)
 
 ### 3. Install robotont driver
 ```bash
- sudo apt install ros-humble-robotont-driver 
+ sudo apt install ros-jazzy-robotont-driver 
 ```
 
 ### 4. Source install files and start the driver using the launch configuration
 ```bash
-source /opt/ros/humble/setup.bash
+source /opt/ros/jazzy/setup.bash
 ros2 launch robotont_driver driver_launch.py
 ```
 
@@ -36,9 +36,9 @@ ros2 launch robotont_driver driver_launch.py device_name:='/dev/ttyACM0'
 
 ## 2. Installing and starting the driver using source code
 
-### 1. Ensure Your System's Distribution is Supported. ROS 2 Humble supports Ubuntu 22.04 (Jammy)
+### 1. Ensure Your System's Distribution is Supported. ROS 2 Jazzy supports Ubuntu 24.04
 
-### 2. Install ROS 2 Humble and create a workspace [Creating a workspace](https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#creating-a-workspace)
+### 2. Install ROS 2 Jazzy and create a workspace [Creating a workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#creating-a-workspace)
 
 ### 3. Pull driver repo and install ROS dependencies
 
@@ -55,7 +55,7 @@ The driver also relies on the following packages:
 * 3: asio-cmake-module
 
 ```bash
-sudo apt install ros-humble-io-context ros-humble-serial-driver ros-humble-asio-cmake-module
+sudo apt install ros-jazzy-io-context ros-jazzy-serial-driver ros-jazzy-asio-cmake-module
 ```
 
 ### 4. Build the driver
