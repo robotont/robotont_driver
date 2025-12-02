@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <atomic>
 #include <functional>
 
 using namespace std::chrono_literals;
@@ -17,7 +18,8 @@ namespace robotont
 Hardware::Hardware(rclcpp::Node::SharedPtr node): 
     m_owned_ctx{new drivers::common::IoContext()},
     m_serial_driver{new drivers::serial_driver::SerialDriver(*m_owned_ctx)},
-    node_(node)
+    node_(node),
+    last_receive_time_(std::chrono::steady_clock::now())
 {
   RCLCPP_INFO(node_->get_logger(), "Robotont driver is starting...");
 
@@ -40,6 +42,10 @@ Hardware::Hardware(rclcpp::Node::SharedPtr node):
 
   // Create a watchdog timer for serial port monitoring
   serial_wdt_ = node_->create_wall_timer(std::chrono::seconds(1), std::bind(&Hardware::checkSerialPort, this));
+  
+  // Create a watchdog timer for receive timeout monitoring (detects communication failure)
+  receive_wdt_ = node_->create_wall_timer(std::chrono::milliseconds(1000), std::bind(&Hardware::checkReceiveTimeout, this));
+
 
   RCLCPP_INFO(node_->get_logger(), "Hardware interface is ready");
 }
@@ -65,7 +71,28 @@ void Hardware::checkSerialPort()
         node_->get_logger(), "Error creating serial port: %s - %s",
         m_device_name.c_str(), ex.what());
     }
+}
 
+// Check if we've received data recently, force reconnect if silent for too long
+void Hardware::checkReceiveTimeout()
+{
+  auto now = std::chrono::steady_clock::now();
+  auto last = last_receive_time_.load();
+  auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - last).count();
+  
+  // If no data received for 5 seconds and port is "open", something is wrong
+  constexpr int64_t RECEIVE_TIMEOUT_MS = 5000;
+  
+  if (elapsed_ms > RECEIVE_TIMEOUT_MS && m_serial_driver->port() && m_serial_driver->port()->is_open()) {
+    RCLCPP_ERROR(node_->get_logger(), 
+                 "No data received for %ld ms - forcing port reconnect", elapsed_ms);
+    try {
+      m_serial_driver->port()->close();
+      // The checkSerialPort watchdog will handle reopening
+    } catch (const std::exception & ex) {
+      RCLCPP_ERROR(node_->get_logger(), "Error closing port: %s", ex.what());
+    }
+  }
 }
 
 // Return list of driver packets 
@@ -79,6 +106,9 @@ void Hardware::get_packet(std::vector<RobotontPacket> &  driver_packets)
 // Callback function for reading from serial
 void Hardware::receive_callback(const std::vector<uint8_t> & buffer, const size_t & bytes_transferred)
 {
+  // Update last receive timestamp - we got data!
+  last_receive_time_.store(std::chrono::steady_clock::now());
+
   mutex_.lock();
   packet_buffer_.append(std::string(buffer.begin(), buffer.begin()+bytes_transferred));
 

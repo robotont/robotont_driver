@@ -5,6 +5,8 @@
 #include "io_context/io_context.hpp"
 #include "serial_driver/serial_driver.hpp"
 #include "msg_converters/converters.hpp"
+#include <atomic>
+#include <chrono>
 
 using std_msgs::msg::UInt8MultiArray;
 
@@ -38,6 +40,8 @@ public:
 private:
   // Function to check the serial port
   void checkSerialPort();
+  // Function to check the receive timeout
+  void checkReceiveTimeout();
 
   // Unique pointer to the IoContext object
   std::unique_ptr<drivers::common::IoContext> m_owned_ctx{};
@@ -54,6 +58,7 @@ private:
   // Shared pointer to the node
   rclcpp::Node::SharedPtr node_;
 
+
   // RobotontPacket object
   RobotontPacket packet_;
   // Vector to store RobotontPacket objects
@@ -67,6 +72,8 @@ private:
   // Shared pointer to the serial watchdog timer
   rclcpp::TimerBase::SharedPtr serial_wdt_;
   // Boolean to indicate if a reconnect is requested
+  rclcpp::TimerBase::SharedPtr receive_wdt_;
+  std::atomic<std::chrono::steady_clock::time_point> last_receive_time_;
   bool reconnect_requested_;
 }; //class hardware
 
