@@ -1,0 +1,8 @@
+- git:
+    local-name: robotont/robotont_msgs
+    uri: https://github.com/robotont/robotont_msgs.git
+    version: jazzy
+- git:
+    local-name: robotont/robotont_description
+    uri: https://github.com/robotont/robotont_description.git
+    version: jazzy
