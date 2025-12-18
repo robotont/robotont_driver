@@ -1,0 +1,22 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  industrial_ci:
+    env:
+      ROS_REPO: ros
+      UPSTREAM_WORKSPACE: ".ci.rosinstall"
+      #CCACHE_DIR: $HOME/.ccache
+    strategy:
+      matrix:
+        env:
+          - {ROS_DISTRO: noetic, ROS_REPO: main}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: 'ros-industrial/industrial_ci@master'
+        env: ${{matrix.env}}
+
+
+
