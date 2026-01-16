@@ -12,7 +12,7 @@ PluginBatState::PluginBatState(rclcpp::Node::SharedPtr node_) : node_(node_)
   reset();
 
   // Initialize batstate publisher
-  battery_state_pub_ = node_->create_publisher<sensor_msgs::msg::BatteryState>("/battery_state", 1);
+  battery_state_pub_ = node_->create_publisher<sensor_msgs::msg::BatteryState>("battery_state", 1);
 }
 
 PluginBatState::~PluginBatState()

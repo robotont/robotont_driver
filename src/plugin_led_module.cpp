@@ -9,15 +9,15 @@
     RCLCPP_INFO(node_->get_logger(), "Robotont LED module is starting...");
 
     // Subscribe to led_pixel topic
-    led_pixel_sub_ = node_->create_subscription<robotont_msgs::msg::LedModulePixel>("/led_pixel", 
+    led_pixel_sub_ = node_->create_subscription<robotont_msgs::msg::LedModulePixel>("led_pixel", 
       rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_sensor_data)), 
       std::bind(&PluginLedModule::pixel_callback, this, std::placeholders::_1));
     // Subscribe to led_mode topic
-    led_mode_sub_ = node_->create_subscription<robotont_msgs::msg::LedModuleMode>("/led_mode", 
+    led_mode_sub_ = node_->create_subscription<robotont_msgs::msg::LedModuleMode>("led_mode", 
       rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_sensor_data)), 
       std::bind(&PluginLedModule::mode_callback, this, std::placeholders::_1));
     // Subscribe to led_segment topic
-    led_segment_sub_ = node_->create_subscription<robotont_msgs::msg::LedModuleSegment>("/led_segment",
+    led_segment_sub_ = node_->create_subscription<robotont_msgs::msg::LedModuleSegment>("led_segment",
       rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_sensor_data)),
       std::bind(&PluginLedModule::segment_callback, this, std::placeholders::_1));  
   }

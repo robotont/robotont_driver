@@ -10,7 +10,7 @@ PluginMotors::PluginMotors(HardwarePtr hw_ptr, rclcpp::Node::SharedPtr node_) : 
   RCLCPP_INFO(node_->get_logger(), "Robotont motors are starting...");
 
   // Subscribe to command velocity topic
-   cmd_vel_sub_ = node_->create_subscription<geometry_msgs::msg::Twist>("/cmd_vel", 
+   cmd_vel_sub_ = node_->create_subscription<geometry_msgs::msg::Twist>("cmd_vel", 
     rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_sensor_data)), 
     std::bind(&PluginMotors::cmd_vel_callback, this, std::placeholders::_1));
 }

@@ -8,6 +8,25 @@ namespace robotont
 PluginOdom::PluginOdom(rclcpp::Node::SharedPtr node_) : node_(node_)
 {
   RCLCPP_INFO(node_->get_logger(), "Robotont odometry is starting...");
+  
+  // Declare parameters
+  node_->declare_parameter<std::string>("odom_frame_id", "odom");
+  node_->declare_parameter<std::string>("base_frame_id", "base_footprint");
+  node_->declare_parameter<std::string>("frame_prefix", "");
+
+  // Get parameters
+  std::string odom_frame_base = node_->get_parameter("odom_frame_id").as_string();
+  std::string base_frame_base = node_->get_parameter("base_frame_id").as_string();
+  std::string frame_prefix = node_->get_parameter("frame_prefix").as_string();
+
+  RCLCPP_INFO(node_->get_logger(), "Using odom_frame_id: %s", odom_frame_base.c_str());
+  RCLCPP_INFO(node_->get_logger(), "Using base_frame_id: %s", base_frame_base.c_str());
+  RCLCPP_INFO(node_->get_logger(), "Using frame_prefix: %s", frame_prefix.c_str());
+
+  // Construct full frame names
+  std::string odom_frame = frame_prefix.empty() ? odom_frame_base : frame_prefix + "/" + odom_frame_base;
+  std::string base_frame = frame_prefix.empty() ? base_frame_base : frame_prefix + "/" + base_frame_base;
+
   // Create messages
   odom_msg_ = std::make_unique<nav_msgs::msg::Odometry>();
   odom_transform_ = std::make_unique<geometry_msgs::msg::TransformStamped>();
@@ -20,7 +39,7 @@ PluginOdom::PluginOdom(rclcpp::Node::SharedPtr node_) : node_(node_)
   reset();
 
   // Initialize odom publisher
-  odom_pub_ = node_->create_publisher<nav_msgs::msg::Odometry>("/odom", 2);
+  odom_pub_ = node_->create_publisher<nav_msgs::msg::Odometry>("odom", 2);
   
   // Init odom tf broadcaster
   odom_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(node_);
