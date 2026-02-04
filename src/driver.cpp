@@ -4,6 +4,8 @@
 #include "robotont_driver/plugin_motors.hpp"
 #include "robotont_driver/plugin_led_module.hpp"
 #include "robotont_driver/plugin_bat_state.hpp"
+#include "robotont_driver/plugin_joint_state.hpp"
+#
 
 namespace robotont
 {
@@ -24,6 +26,7 @@ namespace robotont
     bool plugin_motor;
     bool plugin_led_module;
     bool plugin_battery_state;
+    bool plugin_joint_state;
     try {
       if (!this->has_parameter("plugin_odom")) {
         plugin_odom = this->declare_parameter<bool>("plugin_odom", true);
@@ -48,6 +51,11 @@ namespace robotont
       } else {
         plugin_battery_state = this->get_parameter("plugin_battery_state").as_bool();
       }
+      if (!this->has_parameter("plugin_joint_state")) {
+        plugin_joint_state = this->declare_parameter<bool>("plugin_joint_state", true);
+      } else {
+        plugin_joint_state = this->get_parameter("plugin_joint_state").as_bool();
+      }
 
     } catch (rclcpp::ParameterTypeException & ex) {
       RCLCPP_ERROR(get_logger(), "A provided plugin param was invalid");
@@ -67,6 +75,9 @@ namespace robotont
     if (plugin_battery_state) {
       battery_state_ptr_ = std::make_shared<PluginBatState>(node_ptr);
     }
+    if (plugin_joint_state) {
+      joint_state_ptr_ = std::make_shared<PluginJointState>(node_ptr);
+    }
     
     // Create timer to read data from the robot
     timer_ = this->create_wall_timer(
@@ -82,6 +93,7 @@ namespace robotont
     {
       odom_ptr_->packetReceived(packet);
       battery_state_ptr_->packetReceived(packet);
+      joint_state_ptr_->packetReceived(packet);
       for (auto arg : packet)
       {
         RCLCPP_DEBUG(this->get_logger(), "Received packet content: %s", arg.c_str());

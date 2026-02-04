@@ -9,3 +9,4 @@ driver:
     plugin_motor: true
     plugin_led_module: true
     plugin_battery_state: true
+    plugin_joint_state: true

@@ -8,6 +8,8 @@
 #include "robotont_driver/plugin_motors.hpp"
 #include "robotont_driver/plugin_led_module.hpp"
 #include "robotont_driver/plugin_bat_state.hpp"
+#include "robotont_driver/plugin_joint_state.hpp"
+
 #include <rclcpp_lifecycle/lifecycle_node.hpp>
 #include <lifecycle_msgs/msg/state.hpp>
 #include "geometry_msgs/msg/twist.hpp"
@@ -54,6 +56,7 @@ private:
   // Pointer to the Motors object
   MotorsPtr motor_ptr_;
   LedModulePtr led_ptr_;
+  JointStatePtr joint_state_ptr_;
 
   // Vector to store hardware packets
   std::vector<std::string> hardware_packet_;

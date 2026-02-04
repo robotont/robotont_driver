@@ -37,6 +37,7 @@ ament_auto_add_library(${PROJECT_NAME} SHARED
   src/plugin_motors.cpp
   src/plugin_led_module.cpp
   src/plugin_bat_state.cpp
+  src/plugin_joint_state.cpp
 )
 
 add_executable(driver_node 
@@ -48,6 +49,7 @@ add_executable(driver_node
   src/plugin_motors.cpp 
   src/plugin_led_module.cpp 
   src/plugin_bat_state.cpp
+  src/plugin_joint_state.cpp
 )
 ament_target_dependencies(driver_node 
   io_context 
