@@ -27,7 +27,8 @@ public:
   void publish();
 
   // Function to update the battery state
-  void update(float voltage, float current, bool present);
+  void update(float voltage, float current, bool present, const std::vector<float>& cell_voltages,
+              float cell_temp, float mosfet_temp, uint8_t power_supply_status);
 
 private:
   // Shared pointer to the node
