@@ -32,8 +32,8 @@ PluginOdom::PluginOdom(rclcpp::Node::SharedPtr node_) : node_(node_)
   odom_transform_ = std::make_unique<geometry_msgs::msg::TransformStamped>();
 
   // Set default frame names for odom and robot's base.
-  setFrameId("odom");
-  setChildFrameId("base_footprint");
+  setFrameId(odom_frame);
+  setChildFrameId(base_frame);
 
   // Initialize messages
   reset();
