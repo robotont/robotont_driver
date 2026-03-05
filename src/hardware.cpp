@@ -106,59 +106,48 @@ void Hardware::get_packet(std::vector<RobotontPacket> &  driver_packets)
 // Callback function for reading from serial
 void Hardware::receive_callback(const std::vector<uint8_t> & buffer, const size_t & bytes_transferred)
 {
-  // Update last receive timestamp - we got data!
   last_receive_time_.store(std::chrono::steady_clock::now());
 
   mutex_.lock();
-  packet_buffer_.append(std::string(buffer.begin(), buffer.begin()+bytes_transferred));
+  packet_buffer_.append(std::string(buffer.begin(), buffer.begin() + bytes_transferred));
 
-  // Trim line endings from the left
+  // Trim leading line endings
   size_t packet_beg_pos = packet_buffer_.find_first_not_of("\r\n");
   if (packet_beg_pos == std::string::npos)
   {
-    // buffer empty or contains only newline chars, clear everything
     packet_buffer_ = "";
     mutex_.unlock();
     return;
   }
-  else
-  {
-    packet_buffer_.erase(0, packet_beg_pos);  // Trim
-  }
+  packet_buffer_.erase(0, packet_beg_pos);
 
-  // Analyze the buffer by searching the line ending characters
-  size_t packet_end_pos = packet_buffer_.find_first_of("\r\n");
-  if (packet_end_pos == std::string::npos)
+  // *** Parse ALL complete packets in the buffer, not just one ***
+  size_t packet_end_pos;
+  while ((packet_end_pos = packet_buffer_.find_first_of("\r\n")) != std::string::npos)
   {
-    // Packet in buffer not yet complete
-    mutex_.unlock();
-    return;
-  }
-
-  // The buffer contains at least one symbol marking packet ending
-  if (packet_end_pos > 2)  // Check a minimum size requirement for a valid packet
-  {
-    // Remove this packet from the buffer, the remaining newlines will be trimmed with next call
-    std::string packet_str = packet_buffer_.substr(0, packet_end_pos);
-    packet_buffer_.erase(0, packet_end_pos);
-
-    std::stringstream packet_ss(packet_str);
-    std::string arg;
-    packet_.clear();
-    while (std::getline(packet_ss, arg, ':'))
+    if (packet_end_pos > 2)
     {
-      packet_.push_back(arg);
+      std::string packet_str = packet_buffer_.substr(0, packet_end_pos);
+
+      std::stringstream packet_ss(packet_str);
+      std::string arg;
+      packet_.clear();
+      while (std::getline(packet_ss, arg, ':'))
+      {
+        packet_.push_back(arg);
+      }
+      packets_.push_back(packet_);
     }
-    
-    packets_.push_back(packet_);
-    mutex_.unlock();
-    return;    
+    // Erase past the delimiter
+    packet_buffer_.erase(0, packet_end_pos + 1);
+
+    // Trim any additional leading newlines before next iteration
+    size_t next_beg = packet_buffer_.find_first_not_of("\r\n");
+    if (next_beg == std::string::npos) { packet_buffer_ = ""; break; }
+    packet_buffer_.erase(0, next_beg);
   }
-  
-  // Invalid packet, clear the buffer
-  packet_buffer_ = "";
+
   mutex_.unlock();
-  return;
 }
 
 // Callback function for sending data to serial port
